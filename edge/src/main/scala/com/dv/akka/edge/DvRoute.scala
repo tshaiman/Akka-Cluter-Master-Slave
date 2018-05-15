@@ -5,7 +5,7 @@ import akka.http.scaladsl.marshalling.ToResponseMarshaller
 import akka.http.scaladsl.server.Directives.{get, path, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import com.dv.akka.ImpressionMessage
+import com.dv.akka.{ImpressionData, ImpressionMessage}
 import com.dv.akka.common.models.{JsonSupport, UrlInfo}
 
 import scala.concurrent.duration._
@@ -29,9 +29,8 @@ trait DvRoute extends JsonSupport {
           completeWith(implicitly[ToResponseMarshaller[UrlInfo]]) { f =>
             genMessage() match {
               case m if m.evtType == 0 =>
-                //workerRouter ! m
-                //f(UrlInfo(true,1))
-                orchPool ! MessageWithCallback( m, f, nServices)
+                workerRouter ! m
+                f(UrlInfo(true,1))
               case m =>
                 orchPool ! MessageWithCallback( m, f, nServices)
             }
@@ -48,10 +47,11 @@ trait DvRoute extends JsonSupport {
     //In 20% of Cases we want a "long processing" (400 micro) and in the rest 80% we want "short processing" (50 micro)
     //The Event Type flag ensures that
     //when the flag is turned on a long processing will occur
-    val eventType = if (Random.nextInt(100) <= 20) 7 else 0
+    val eventType = if (Random.nextInt(100) <= 100) 7 else 0
 
     //There are 100 fields on this class ,we want to fill them all
-    ImpressionMessage(s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, eventType)
+    val data = new ImpressionData(s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d)
+    ImpressionMessage(data,eventType )
   }
 }
 

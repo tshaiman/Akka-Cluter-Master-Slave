@@ -35,15 +35,9 @@ libraryDependencies ++= Seq(
 )
 
 
-libraryDependencies += "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"
 
 exportJars := true
 mainClass in Compile := Option("com.dv.akka.EdgeRunner")
-
-
-PB.targets in Compile := Seq(
-  scalapb.gen() -> (sourceManaged in Compile).value
-)
 
 
 

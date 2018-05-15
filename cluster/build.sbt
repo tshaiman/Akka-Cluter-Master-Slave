@@ -35,16 +35,8 @@ libraryDependencies ++= Seq(
 )
 
 
-//libraryDependencies += "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"
-
 exportJars := true
 mainClass in Compile := Option("com.dv.akka.cluster.NodeRunner")
-
-
-//PB.targets in Compile := Seq(
-//  scalapb.gen() -> (sourceManaged in Compile).value
-//)
-
 
 
 assemblyMergeStrategy in assembly := {

@@ -2,7 +2,6 @@ package com.dv.akka.cluster
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.routing.FromConfig
-import com.dv.akka.Monitor
 import com.dv.akka.common.models.Utils
 import com.typesafe.config.ConfigFactory
 
@@ -17,7 +16,6 @@ object NodeRunner {
 
     //for simplicity this is hard coded
     val workTimeMicro = 400
-
     val hostname = Utils.hostname
     println(s"cluster startup with $ports ports. hostname $hostname . worktime: $workTimeMicro")
 
@@ -27,8 +25,7 @@ object NodeRunner {
         .withFallback(ConfigFactory.load())
 
       implicit val system = ActorSystem("ClusterSystem", config)
-      val workers:ActorRef = system.actorOf(UrlWorker.props(1), "worker")
-      //system.actorOf(Monitor.props(), "monitor")
+      val workers:ActorRef = system.actorOf(UrlWorker.props(), "workerRouter")
    }
   }
 }

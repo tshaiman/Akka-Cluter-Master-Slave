@@ -5,7 +5,7 @@ import akka.cluster.metrics.AdaptiveLoadBalancingGroup
 import akka.cluster.routing.{ClusterRouterGroup, ClusterRouterGroupSettings}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
-import akka.routing.ConsistentHashingGroup
+import akka.routing.{ConsistentHashingGroup, FromConfig}
 import akka.stream.Materializer
 
 import scala.concurrent.ExecutionContext
@@ -24,6 +24,8 @@ class HttpServer(port:Int,services:Int)
       totalInstances = 100, routeesPaths = List("/user/worker"),
       allowLocalRoutees = true, useRoles = Set("compute"))).props(),
     name = "workers")
+
+ // val workerRouter = actorSys.actorOf(FromConfig.props(Props.empty),"workers")
 
   val orchPool = actorSys.actorOf(OrchestratorPoolActor.props(1, 450, workerRouter))
 

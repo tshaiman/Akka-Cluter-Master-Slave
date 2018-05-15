@@ -37,18 +37,15 @@ class OrchestratorActor(workerRouter: ActorRef) extends Actor {
       _evt = evt
       originCount = evt.request.evtType
       workerRouter ! evt.request
-      //OrchestratorActor.reqCount.incrementAndGet()
 
     //This piece of code mocks going back and forth to 7 diffrent microservices and getting a reply from them
     case res:Int if res > 1 =>
       _evt.request.evtType = res -1
       workerRouter ! _evt.request
-      //OrchestratorActor.atomicReqCount.incrementAndGet()
     case res:Int =>
       _evt.complete(UrlInfo(true,originCount))
       context.parent ! ImIdleNow
       _evt = null
-      //OrchestratorActor.atomicReqCount.incrementAndGet()
   }
 
 
