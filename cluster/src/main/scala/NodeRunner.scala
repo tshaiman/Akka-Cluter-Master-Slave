@@ -12,6 +12,7 @@ object NodeRunner {
   def main(args: Array[String]): Unit = {
 
     println(s"*****Welcome to DV Cluster POC . running mode : cluster********************")
+
     val ports:Seq[String] = if (args.length > 0) args else Seq("2551")
 
     //for simplicity this is hard coded
@@ -28,4 +29,5 @@ object NodeRunner {
       val workers:ActorRef = system.actorOf(UrlWorker.props(), "workerRouter")
    }
   }
+
 }

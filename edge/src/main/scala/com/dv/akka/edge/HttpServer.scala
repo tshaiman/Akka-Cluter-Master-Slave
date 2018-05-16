@@ -7,6 +7,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.routing.{ConsistentHashingGroup, FromConfig}
 import akka.stream.Materializer
+import com.dv.akka.KafkaActor
 
 import scala.concurrent.ExecutionContext
 import scala.util.Random
@@ -19,15 +20,10 @@ class HttpServer(port:Int,services:Int)
   override def actorSys: ActorSystem = implicitly
   override def nServices:Int = services
 
-  val workerRouter = actorSys.actorOf(
-    ClusterRouterGroup(AdaptiveLoadBalancingGroup(), ClusterRouterGroupSettings(
-      totalInstances = 100, routeesPaths = List("/user/worker"),
-      allowLocalRoutees = true, useRoles = Set("compute"))).props(),
-    name = "workers")
-
- // val workerRouter = actorSys.actorOf(FromConfig.props(Props.empty),"workers")
+  val workerRouter = actorSys.actorOf(FromConfig.props(Props.empty),"workers")
 
   val orchPool = actorSys.actorOf(OrchestratorPoolActor.props(1, 450, workerRouter))
+  val kafkaRouter = actorSys.actorOf(Props[KafkaActor],name = "kafkaActor")
 
   val route: Route = dvRoute
 

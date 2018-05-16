@@ -38,6 +38,7 @@ libraryDependencies ++= Seq(
 exportJars := true
 mainClass in Compile := Option("com.dv.akka.cluster.NodeRunner")
 
+fork in run := true
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard

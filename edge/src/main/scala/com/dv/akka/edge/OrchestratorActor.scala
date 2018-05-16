@@ -30,20 +30,14 @@ class OrchestratorActor(workerRouter: ActorRef) extends Actor {
 
     case evt : MessageWithCallback if _evt !=null =>
       throw new IllegalArgumentException("Got message during process")
-    case res:Int if res != _evt.request.evtType=>
-      throw new IllegalArgumentException(s"Invalid message !!! existing:${_evt.request.evtType}, got:$res")
 
     case evt : MessageWithCallback  =>
       _evt = evt
       originCount = evt.request.evtType
       workerRouter ! evt.request
 
-    //This piece of code mocks going back and forth to 7 diffrent microservices and getting a reply from them
-    case res:Int if res > 1 =>
-      _evt.request.evtType = res -1
-      workerRouter ! _evt.request
-    case res:Int =>
-      _evt.complete(UrlInfo(true,originCount))
+    case BrandSafetyResponse(_,isAllowed) =>
+      _evt.complete(UrlInfo(isAllowed,originCount))
       context.parent ! ImIdleNow
       _evt = null
   }

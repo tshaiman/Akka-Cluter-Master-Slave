@@ -1,14 +1,8 @@
-/*
- * Copyright (c) 2018. Bionic 8 Analytics Ltd.
- * The Software and accompanying documentation is owned by Bionic 8 Analytics Ltd (Bionic). Bionic reserves all rights in and to the Software and documentation.
- * You may not use, copy, modify, distribute or make any other disposition in the software or documentation without the express written permission and subject to the terms of a written license from Bionic.
- * BIONIC SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE AND DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS". UNLESS AGREED IN A WRITTEN LICENSE AGREEMENT, BIONIC HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * IN NO EVENT SHALL BIONIC BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF BIONIC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+
 
 package com.dv.akka
 
-final class ImpressionData(
+class ImpressionData(
                             f1: String = "",
                             f2: String = "",
                             f3: String = "",
@@ -109,7 +103,110 @@ final class ImpressionData(
                             d48: Int = 0,
                             d49: Int = 0,
                             d50: Int = 0
-                          )
+                          ) {
+
+  val xf1: String = f1
+  val xd1: Int = d1
+  val xf2: String = f2
+  val xd2: Int = d2
+  val xf3: String = f3
+  val xd3: Int = d3
+  val xf4: String = f4
+  val xd4: Int = d4
+  val xf5: String = f5
+  val xd5: Int = d5
+  val xf6: String = f6
+  val xd6: Int = d6
+  val xf7: String = f7
+  val xd7: Int = d7
+  val xf8: String = f8
+  val xd8: Int = d8
+  val xf9: String = f9
+  val xd9: Int = d9
+  val xf10: String = f10
+  val xd10: Int = d10
+  val xf11: String = f11
+  val xd11: Int = d11
+  val xf12: String = f12
+  val xd12: Int = d12
+  val xf13: String = f13
+  val xd13: Int = d13
+  val xf14: String = f14
+  val xd14: Int = d14
+  val xf15: String = f15
+  val xd15: Int = d15
+  val xf16: String = f16
+  val xd16: Int = d16
+  val xf17: String = f17
+  val xd17: Int = d17
+  val xf18: String = f18
+  val xd18: Int = d18
+  val xf19: String = f19
+  val xd19: Int = d19
+  val xf20: String = f20
+  val xd20: Int = d20
+  val xf21: String = f21
+  val xd21: Int = d21
+  val xf22: String = f22
+  val xd22: Int = d22
+  val xf23: String = f23
+  val xd23: Int = d23
+  val xf24: String = f24
+  val xd24: Int = d24
+  val xf25: String = f25
+  val xd25: Int = d25
+  val xf26: String = f26
+  val xd26: Int = d26
+  val xf27: String = f27
+  val xd27: Int = d27
+  val xf28: String = f28
+  val xd28: Int = d28
+  val xf29: String = f29
+  val xd29: Int = d29
+  val xf30: String = f30
+  val xd30: Int = d30
+  val xf31: String = f31
+  val xd31: Int = d31
+  val xf32: String = f32
+  val xd32: Int = d32
+  val xf33: String = f33
+  val xd33: Int = d33
+  val xf34: String = f34
+  val xd34: Int = d34
+  val xf35: String = f35
+  val xd35: Int = d35
+  val xf36: String = f36
+  val xd36: Int = d36
+  val xf37: String = f37
+  val xd37: Int = d37
+  val xf38: String = f38
+  val xd38: Int = d38
+  val xf39: String = f39
+  val xd39: Int = d39
+  val xf40: String = f40
+  val xd40: Int = d40
+  val xf41: String = f41
+  val xd41: Int = d41
+  val xf42: String = f42
+  val xd42: Int = d42
+  val xf43: String = f43
+  val xd43: Int = d43
+  val xf44: String = f44
+  val xd44: Int = d44
+  val xf45: String = f45
+  val xd45: Int = d45
+  val xf46: String = f46
+  val xd46: Int = d46
+  val xf47: String = f47
+  val xd47: Int = d47
+  val xf48: String = f48
+  val xd48: Int = d48
+  val xf49: String = f49
+  val xd49: Int = d49
+  val xf50: String = f50
+  val xd50: Int = d50
+}
 
 
 case class ImpressionMessage(data:ImpressionData , var evtType:Int)
+case class BrandSafetyResponse(data:ImpressionData,val isAllowed:Boolean)

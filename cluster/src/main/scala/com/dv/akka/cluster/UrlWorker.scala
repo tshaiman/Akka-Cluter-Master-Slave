@@ -6,15 +6,19 @@ import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.dispatch.{PriorityGenerator, UnboundedStablePriorityMailbox}
 import akka.routing.{BalancingPool, FromConfig}
 import com.typesafe.config.Config
-import com.dv.akka.ImpressionMessage
+import com.dv.akka.{BrandSafetyResponse, ImpressionMessage}
 
 
 object UrlWorker {
-  def props(): Props = FromConfig.props(Props[UrlWorker]).withMailbox("priority-mailbox")
-  var workTime:Int = 400 // default unless set
+  def props()(implicit actorSys:ActorSystem): Props = {
+    otherWorkers =  implicitly[ActorSystem].actorOf(FromConfig.props(Props.empty),"others")
+    FromConfig.props(Props[UrlWorker]).withMailbox("priority-mailbox")
+  }
 
+  var workTime:Int = 400 // default unless set
+  var otherWorkers:ActorRef =  null
   val workStr:String = "abcdefghijklmnopqrstuvwxyz1234567890"
-  var n:Int = 0;
+
 }
 
 class MyPrioMailbox(settings: ActorSystem.Settings, config: Config)
@@ -26,24 +30,27 @@ class MyPrioMailbox(settings: ActorSystem.Settings, config: Config)
 
 class UrlWorker() extends Actor{
 
-  override def preStart(): Unit = {
-    UrlWorker.n += 1
-    println("Hello from Url Worker !!!" + UrlWorker.n)
-
-  }
-
   def receive = {
     case evt:ImpressionMessage if evt.evtType > 0 =>
-      workAndReply(sender(),UrlWorker.workTime,evt.evtType)
+      workAndForward(UrlWorker.workTime,evt)
   }
 
 
-  private def workAndReply(replyTo:ActorRef,
-                           workInMicro:Int,
-                           whatToReply:Any): Unit = {
+  private def workAndForward( workInMicro:Int,
+                           evt:ImpressionMessage): Unit = {
+
     val end = System.nanoTime() + (workInMicro * 1000)
     while (System.nanoTime() < end) {UrlWorker.workStr.reverse.reverse}
-    replyTo ! whatToReply
 
+    if(evt.evtType > 1 ) {
+      //move to next actor
+      val nextMessage = ImpressionMessage(evt.data, evt.evtType - 1)
+      UrlWorker.otherWorkers forward nextMessage
+    }
+    else {
+      //return the final response
+      sender ! BrandSafetyResponse(evt.data,true)
+
+    }
   }
 }

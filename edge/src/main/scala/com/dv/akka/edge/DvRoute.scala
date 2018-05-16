@@ -1,5 +1,7 @@
 package com.dv.akka.edge
 
+import java.util.concurrent.atomic.AtomicLong
+
 import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.marshalling.ToResponseMarshaller
 import akka.http.scaladsl.server.Directives.{get, path, _}
@@ -15,7 +17,7 @@ import scala.util.Random
 trait DvRoute extends JsonSupport {
 
   val orchPool: ActorRef
-  val workerRouter: ActorRef
+  val kafkaRouter:ActorRef
   def actorSys: ActorSystem
   def nServices: Int
 
@@ -29,7 +31,7 @@ trait DvRoute extends JsonSupport {
           completeWith(implicitly[ToResponseMarshaller[UrlInfo]]) { f =>
             genMessage() match {
               case m if m.evtType == 0 =>
-                workerRouter ! m
+                kafkaRouter ! m
                 f(UrlInfo(true,1))
               case m =>
                 orchPool ! MessageWithCallback( m, f, nServices)
@@ -40,17 +42,17 @@ trait DvRoute extends JsonSupport {
     }
   }
 
-  def genMessage(): ImpressionMessage = {
-    val s: String = "abc"
-    val d: Int = 43
+  val counter:AtomicLong = new AtomicLong(0)
 
+  def genMessage(): ImpressionMessage = {
+    val s: String = "abcdefghijklmnopqrst"
+    val d:Int = 42
     //In 20% of Cases we want a "long processing" (400 micro) and in the rest 80% we want "short processing" (50 micro)
     //The Event Type flag ensures that
     //when the flag is turned on a long processing will occur
-    val eventType = if (Random.nextInt(100) <= 100) 7 else 0
-
-    //There are 100 fields on this class ,we want to fill them all
+    val eventType = if (counter.incrementAndGet() % 5 ==0) 7 else 0
     val data = new ImpressionData(s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d)
+    //val data = new ImpressionData()
     ImpressionMessage(data,eventType )
   }
 }
