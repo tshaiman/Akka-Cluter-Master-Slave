@@ -3,3 +3,4 @@ addSbtPlugin("com.dwijnand" % "sbt-dynver" % "3.0.0")
 
 // Avro Protocol Buffers Compiler
 addSbtPlugin("com.julianpeeters" % "sbt-avrohugger" % "2.0.0-RC4")
+addSbtPlugin("com.julianpeeters" % "sbt-avrohugger" % "2.0.0-RC4")

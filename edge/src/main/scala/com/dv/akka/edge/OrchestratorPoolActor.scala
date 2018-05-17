@@ -11,14 +11,14 @@ package com.dv.akka.edge
 
 import akka.actor.{Actor, ActorRef, Props}
 import akka.routing.RoundRobinPool
-import com.dv.akka.ImpressionMessage
 import com.dv.akka.common.models.UrlInfo
+import com.dv.poc.DvImpression
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 import scala.collection.mutable
 
-case class MessageWithCallback(request: ImpressionMessage,
+case class MessageWithCallback(request: DvImpression,
                                complete: UrlInfo => Unit,
                                numOfCalls: Int)
 

@@ -1,12 +1,12 @@
 
 package com.dv.akka.edge
 
-import java.util.concurrent.atomic.AtomicInteger
 
 import akka.actor.{Actor, ActorRef, Props}
 import akka.util.Timeout
 import com.dv.akka._
 import com.dv.akka.common.models.UrlInfo
+import com.dv.poc.DvImpression
 
 import scala.concurrent.duration._
 
@@ -14,9 +14,6 @@ object OrchestratorActor {
   def props(sericeConnector: ActorRef): Props =
     Props(new OrchestratorActor(sericeConnector))
 
-  //var orchCount = new AtomicInteger(0)
-  //var reqCount = new AtomicInteger(0)
-  //var atomicReqCount = new AtomicInteger(0)
 }
 
 
@@ -36,8 +33,8 @@ class OrchestratorActor(workerRouter: ActorRef) extends Actor {
       originCount = evt.request.evtType
       workerRouter ! evt.request
 
-    case BrandSafetyResponse(_,isAllowed) =>
-      _evt.complete(UrlInfo(isAllowed,originCount))
+    case evt:DvImpression =>
+      _evt.complete(UrlInfo(true,originCount))
       context.parent ! ImIdleNow
       _evt = null
   }
