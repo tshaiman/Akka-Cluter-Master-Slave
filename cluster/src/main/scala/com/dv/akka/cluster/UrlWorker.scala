@@ -6,7 +6,7 @@ import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.dispatch.{PriorityGenerator, UnboundedStablePriorityMailbox}
 import akka.routing.{BalancingPool, FromConfig}
 import com.typesafe.config.Config
-import com.dv.akka.{BrandSafetyResponse, ImpressionMessage}
+import com.dv.poc.DvImpression
 
 
 object UrlWorker {
@@ -24,32 +24,31 @@ object UrlWorker {
 class MyPrioMailbox(settings: ActorSystem.Settings, config: Config)
   extends UnboundedStablePriorityMailbox(// Create a new PriorityGenerator, lower prio means more important
     PriorityGenerator {
-      case evt:ImpressionMessage =>
+      case evt:DvImpression =>
         evt.evtType
     })
 
 class UrlWorker() extends Actor{
 
   def receive = {
-    case evt:ImpressionMessage if evt.evtType > 0 =>
+    case evt:DvImpression if evt.evtType > 0 =>
       workAndForward(UrlWorker.workTime,evt)
   }
 
-
   private def workAndForward( workInMicro:Int,
-                           evt:ImpressionMessage): Unit = {
+                           evt:DvImpression): Unit = {
 
     val end = System.nanoTime() + (workInMicro * 1000)
     while (System.nanoTime() < end) {UrlWorker.workStr.reverse.reverse}
 
     if(evt.evtType > 1 ) {
       //move to next actor
-      val nextMessage = ImpressionMessage(evt.data, evt.evtType - 1)
+      val nextMessage = evt.copy(evtType = evt.evtType -1)
       UrlWorker.otherWorkers forward nextMessage
     }
     else {
       //return the final response
-      sender ! BrandSafetyResponse(evt.data,true)
+      sender ! evt
 
     }
   }

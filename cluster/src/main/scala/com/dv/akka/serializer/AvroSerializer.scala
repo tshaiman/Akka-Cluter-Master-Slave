@@ -39,7 +39,7 @@ import org.apache.avro.specific.{SpecificDatumReader, SpecificDatumWriter, Speci
   * record. Please ensure, that the schema is statically available when
   * instancing a new class using the default constructor.
   *
-
+  * an example (cf. test suite).
   */
 trait GenericRecordProxy {
   def getSchema(): Schema

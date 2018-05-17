@@ -25,9 +25,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion ,
   "com.typesafe.akka" %% "akka-http-xml"        % akkaHttpVersion ,
   "com.typesafe.akka" %% "akka-stream"          % akkaVersion ,
-  //"org.apache.avro" % "avro" % "1.8.2" % "compile",
-  //"com.sksamuel.avro4s" %% "avro4s-core" % "1.8.1",
-  //"io.confluent" % "kafka-streams-avro-serde" % "4.0.0",
+  "org.apache.avro" % "avro" % "1.8.2" % "compile",
+  "com.sksamuel.avro4s" %% "avro4s-core" % "1.8.1",
+  "io.confluent" % "kafka-streams-avro-serde" % "4.0.0",
   "org.scala-lang.modules" %% "scala-async" % "0.9.7",
   "ch.qos.logback"              %  "logback-classic"        % "1.2.3",
   "com.typesafe.scala-logging"  %% "scala-logging"          % "3.7.2",
@@ -38,7 +38,6 @@ libraryDependencies ++= Seq(
 exportJars := true
 mainClass in Compile := Option("com.dv.akka.cluster.NodeRunner")
 
-fork in run := true
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
