@@ -12,4 +12,5 @@ object Utils {
   }
 
   def hostname:String = java.net.InetAddress.getLocalHost().getHostAddress()
+  //def hostname:String = "127.0.0.1"
 }

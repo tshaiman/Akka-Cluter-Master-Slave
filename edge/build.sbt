@@ -39,7 +39,7 @@ libraryDependencies ++= Seq(
 exportJars := true
 mainClass in Compile := Option("com.dv.akka.EdgeRunner")
 
-sourceGenerators in Compile += (avroScalaGenerate in Compile).taskValue
+//sourceGenerators in Compile += (avroScalaGenerate in Compile).taskValue
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard

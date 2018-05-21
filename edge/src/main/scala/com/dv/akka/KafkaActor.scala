@@ -1,7 +1,6 @@
 package com.dv.akka
 
 import akka.actor.{Actor, ActorLogging}
-import com.dv.poc.DvImpression
 
 class KafkaActor extends Actor with ActorLogging{
 

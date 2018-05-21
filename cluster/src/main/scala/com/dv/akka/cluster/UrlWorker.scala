@@ -1,12 +1,11 @@
 package com.dv.akka.cluster
 
-import java.util.concurrent.atomic.AtomicInteger
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.dispatch.{PriorityGenerator, UnboundedStablePriorityMailbox}
 import akka.routing.{BalancingPool, FromConfig}
+import com.dv.akka.DvImpression
 import com.typesafe.config.Config
-import com.dv.poc.DvImpression
 
 
 object UrlWorker {
@@ -40,7 +39,6 @@ class UrlWorker() extends Actor{
 
     val end = System.nanoTime() + (workInMicro * 1000)
     while (System.nanoTime() < end) {UrlWorker.workStr.reverse.reverse}
-
     if(evt.evtType > 1 ) {
       //move to next actor
       val nextMessage = evt.copy(evtType = evt.evtType -1)

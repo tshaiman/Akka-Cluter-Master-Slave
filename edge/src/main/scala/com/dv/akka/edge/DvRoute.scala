@@ -7,8 +7,8 @@ import akka.http.scaladsl.marshalling.ToResponseMarshaller
 import akka.http.scaladsl.server.Directives.{get, path, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
+import com.dv.akka.DvImpression
 import com.dv.akka.common.models.{JsonSupport, UrlInfo}
-import com.dv.poc.DvImpression
 
 import scala.concurrent.duration._
 import scala.util.Random

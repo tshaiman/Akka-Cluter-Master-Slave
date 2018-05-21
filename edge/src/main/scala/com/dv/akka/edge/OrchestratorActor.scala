@@ -6,7 +6,6 @@ import akka.actor.{Actor, ActorRef, Props}
 import akka.util.Timeout
 import com.dv.akka._
 import com.dv.akka.common.models.UrlInfo
-import com.dv.poc.DvImpression
 
 import scala.concurrent.duration._
 

@@ -11,8 +11,8 @@ package com.dv.akka.edge
 
 import akka.actor.{Actor, ActorRef, Props}
 import akka.routing.RoundRobinPool
+import com.dv.akka.DvImpression
 import com.dv.akka.common.models.UrlInfo
-import com.dv.poc.DvImpression
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext

@@ -1,7 +1,7 @@
 {
      "type": "record",
      "namespace": "com.dv.poc",
-     "name": "DvImpression",
+     "name": "DvImpression2",
      "fields": [
     { "name": "evtType", "type": "int" },
     { "name": "f1", "type": "string" },

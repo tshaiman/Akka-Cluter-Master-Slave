@@ -27,7 +27,7 @@ package com.dv.akka.serializer
 import akka.serialization._
 import java.io.ByteArrayOutputStream
 
-import com.dv.poc.DvImpression
+import com.dv.akka.DvImpression
 import com.sksamuel.avro4s.{AvroInputStream, AvroOutputStream}
 import org.apache.avro.generic.{GenericDatumReader, IndexedRecord}
 import org.apache.avro.io.{BinaryDecoder, BinaryEncoder, DecoderFactory, EncoderFactory}
