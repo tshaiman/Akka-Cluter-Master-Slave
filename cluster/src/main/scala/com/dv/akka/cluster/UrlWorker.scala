@@ -4,7 +4,8 @@ package com.dv.akka.cluster
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.dispatch.{PriorityGenerator, UnboundedStablePriorityMailbox}
 import akka.routing.{BalancingPool, FromConfig}
-import com.dv.akka.DvImpression
+import com.dv.akka.model.AvroSchemaUtil
+import com.dv.akka.{DvImpression, DvMessage}
 import com.typesafe.config.Config
 
 
@@ -30,12 +31,19 @@ class MyPrioMailbox(settings: ActorSystem.Settings, config: Config)
 class UrlWorker() extends Actor{
 
   def receive = {
-    case evt:DvImpression if evt.evtType > 0 =>
-      workAndForward(UrlWorker.workTime,evt)
+    case msg:DvMessage if msg.evtType > 0 =>
+      workAndForward(UrlWorker.workTime,msg)
+    /*case evt:DvImpression if evt.evtType > 0 =>
+      workAndForward(UrlWorker.workTime,evt)*/
   }
 
   private def workAndForward( workInMicro:Int,
-                           evt:DvImpression): Unit = {
+                           evt:DvMessage): Unit = {
+
+    ///////////////////////////////////
+    //////simulate Deserialize
+    deserializeImpression(evt)
+    /////////////////////////////////
 
     val end = System.nanoTime() + (workInMicro * 1000)
     while (System.nanoTime() < end) {UrlWorker.workStr.reverse.reverse}
@@ -49,5 +57,10 @@ class UrlWorker() extends Actor{
       sender ! evt
 
     }
+  }
+
+  def deserializeImpression(evt:DvMessage) : Int = {
+    val dvImpression:DvImpression = AvroSchemaUtil.fromByteRecord(evt.data)
+    if (dvImpression == null) 0 else 1
   }
 }

@@ -6,6 +6,7 @@ import akka.actor.{Actor, ActorRef, Props}
 import akka.util.Timeout
 import com.dv.akka._
 import com.dv.akka.common.models.UrlInfo
+import com.dv.akka.model.AvroSchemaUtil
 
 import scala.concurrent.duration._
 
@@ -30,9 +31,10 @@ class OrchestratorActor(workerRouter: ActorRef) extends Actor {
     case evt : MessageWithCallback  =>
       _evt = evt
       originCount = evt.request.evtType
-      workerRouter ! evt.request
+      val data = AvroSchemaUtil.toByteArray(_evt.request)
+      workerRouter ! DvMessage(_evt.request.evtType,"1",data)
 
-    case evt:DvImpression =>
+    case evt:DvMessage =>
       _evt.complete(UrlInfo(true,originCount))
       context.parent ! ImIdleNow
       _evt = null
